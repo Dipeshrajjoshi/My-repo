@@ -1,0 +1,155 @@
+
+package analysis;
+
+import java.util.Random;
+
+public class MaxSumTest {
+
+    static Random rand = new Random();
+
+    // Method 1: Brute force approach to find maximum sum subarray
+    public static int cubicSum(int[] inputArray) {
+        int maxSubArraySum = Integer.MIN_VALUE;
+        for (int startIdx = 0; startIdx < inputArray.length; startIdx++) {
+            for (int endIdx = startIdx; endIdx < inputArray.length; endIdx++) {
+                int currentSum = 0;
+                for (int k = startIdx; k <= endIdx; k++) {
+                    currentSum += inputArray[k];
+                }
+                maxSubArraySum = Math.max(maxSubArraySum, currentSum);
+            }
+        }
+        return maxSubArraySum;
+    }
+
+    // Method 2: Use two loops and accumulate sum
+    public static int quadraticSum(int[] inputArray) {
+        int maxSubArraySum = Integer.MIN_VALUE;
+        for (int startIdx = 0; startIdx < inputArray.length; startIdx++) {
+            int currentSum = 0;
+            for (int endIdx = startIdx; endIdx < inputArray.length; endIdx++) {
+                currentSum += inputArray[endIdx];
+                maxSubArraySum = Math.max(maxSubArraySum, currentSum);
+            }
+        }
+        return maxSubArraySum;
+    }
+
+    // Method 3: Divide and conquer approach
+    public static int divideConquerSum(int[] inputArray) {
+        return findMaxSubArray(inputArray, 0, inputArray.length - 1);
+    }
+
+    private static int findMaxSubArray(int[] inputArray, int left, int right) {
+        if (left == right) return Math.max(inputArray[left], 0);
+
+        int mid = (left + right) / 2;
+        int leftMax = findMaxSubArray(inputArray, left, mid);
+        int rightMax = findMaxSubArray(inputArray, mid + 1, right);
+
+        int leftBorderSum = 0, maxLeftBorderSum = 0;
+        for (int i = mid; i >= left; i--) {
+            leftBorderSum += inputArray[i];
+            maxLeftBorderSum = Math.max(maxLeftBorderSum, leftBorderSum);
+        }
+
+        int rightBorderSum = 0, maxRightBorderSum = 0;
+        for (int i = mid + 1; i <= right; i++) {
+            rightBorderSum += inputArray[i];
+            maxRightBorderSum = Math.max(maxRightBorderSum, rightBorderSum);
+        }
+
+        return Math.max(Math.max(leftMax, rightMax), maxLeftBorderSum + maxRightBorderSum);
+    }
+
+    // Method 4: Kadane’s algorithm
+    public static int kadaneSum(int[] inputArray) {
+        int maxSubArraySum = 0, currentSum = 0;
+        for (int num : inputArray) {
+            currentSum = Math.max(0, currentSum + num);
+            maxSubArraySum = Math.max(maxSubArraySum, currentSum);
+        }
+        return maxSubArraySum;
+    }
+
+    // Slow prefix average
+    public static double[] slowPrefixAvg(int[] inputArray) {
+        double[] prefixAvg = new double[inputArray.length];
+        for (int i = 0; i < inputArray.length; i++) {
+            int sum = 0;
+            for (int j = 0; j <= i; j++) {
+                sum += inputArray[j];
+            }
+            prefixAvg[i] = (double) sum / (i + 1);
+        }
+        return prefixAvg;
+    }
+
+    // Fast prefix average
+    public static double[] fastPrefixAvg(int[] inputArray) {
+        double[] prefixAvg = new double[inputArray.length];
+        int runningSum = 0;
+        for (int i = 0; i < inputArray.length; i++) {
+            runningSum += inputArray[i];
+            prefixAvg[i] = (double) runningSum / (i + 1);
+        }
+        return prefixAvg;
+    }
+
+    // Main method to compare runtime in nanoseconds
+    public static void main(String[] args) {
+        int[] sizes = {8, 16, 32, 64, 128, 256, 512, 1024};
+
+        System.out.printf("%-8s | %-12s | %-12s | %-12s | %-12s | %-12s | %-12s%n",
+                "Size", "M1", "M2", "M3", "M4", "Avg1", "Avg2");
+        System.out.println("-------------------------------------------------------------");
+
+        for (int size : sizes) {
+            int[] inputArray = new int[size];
+            for (int i = 0; i < size; i++) {
+                inputArray[i] = rand.nextInt(2 * size + 1) - size;
+            }
+
+            long startTime, endTime;
+
+            startTime = System.nanoTime();
+            cubicSum(inputArray);
+            endTime = System.nanoTime() - startTime;
+
+            long method1Time = endTime;
+
+            startTime = System.nanoTime();
+            quadraticSum(inputArray);
+            endTime = System.nanoTime() - startTime;
+
+            long method2Time = endTime;
+
+            startTime = System.nanoTime();
+            divideConquerSum(inputArray);
+            endTime = System.nanoTime() - startTime;
+
+            long method3Time = endTime;
+
+            startTime = System.nanoTime();
+            kadaneSum(inputArray);
+            endTime = System.nanoTime() - startTime;
+
+            long method4Time = endTime;
+
+            startTime = System.nanoTime();
+            slowPrefixAvg(inputArray);
+            endTime = System.nanoTime() - startTime;
+
+            long avg1Time = endTime;
+
+            startTime = System.nanoTime();
+            fastPrefixAvg(inputArray);
+            endTime = System.nanoTime() - startTime;
+
+            long avg2Time = endTime;
+
+            System.out.printf("%-8d | %-12d ns | %-12d ns | %-12d ns | %-12d ns | %-12d ns | %-12d ns%n",
+                    size, method1Time, method2Time, method3Time, method4Time, avg1Time, avg2Time);
+        }
+    }
+}
