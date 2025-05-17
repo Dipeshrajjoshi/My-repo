@@ -1,0 +1,459 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 TimesNewRomanPSMT;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww37900\viewh21300\viewkind0
+\deftab720
+\pard\pardeftab720\sl368\sa213\partightenfactor0
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+	package analysis;
+\f1 \
+
+\f0 import java.util.Random;
+\f1 \
+
+\f0 public class MaxSumTest \{
+\f1 \
+
+\f0 \'a0\'a0\'a0 static Random rand = new Random();
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Method 1: Brute force approach to find maximum sum subarray
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static int cubicSum(int[] inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int maxSubArraySum = Integer.MIN_VALUE;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int startIdx = 0; startIdx < inputArray.length; startIdx++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int endIdx = startIdx; endIdx < inputArray.length; endIdx++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 int currentSum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int k = startIdx; k <= endIdx; k++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 currentSum += inputArray[k];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 maxSubArraySum = Math.max(maxSubArraySum, currentSum);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return maxSubArraySum;
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Method 2: Use two loops and accumulate sum
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static int quadraticSum(int[] inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int maxSubArraySum = Integer.MIN_VALUE;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int startIdx = 0; startIdx < inputArray.length; startIdx++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 int currentSum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int endIdx = startIdx; endIdx < inputArray.length; endIdx++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 currentSum += inputArray[endIdx];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 maxSubArraySum = Math.max(maxSubArraySum, currentSum);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return maxSubArraySum;
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Method 3: Divide and conquer approach
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static int divideConquerSum(int[] inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return findMaxSubArray(inputArray, 0, inputArray.length - 1);
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 private static int findMaxSubArray(int[] inputArray, int left, int right) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 if (left == right) return Math.max(inputArray[left], 0);
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int mid = (left + right) / 2;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int leftMax = findMaxSubArray(inputArray, left, mid);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int rightMax = findMaxSubArray(inputArray, mid + 1, right);
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int leftBorderSum = 0, maxLeftBorderSum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int i = mid; i >= left; i--) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 leftBorderSum += inputArray[i];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 maxLeftBorderSum = Math.max(maxLeftBorderSum, leftBorderSum);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int rightBorderSum = 0, maxRightBorderSum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int i = mid + 1; i <= right; i++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 rightBorderSum += inputArray[i];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 maxRightBorderSum = Math.max(maxRightBorderSum, rightBorderSum);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return Math.max(Math.max(leftMax, rightMax), maxLeftBorderSum + maxRightBorderSum);
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Method 4: Kadane\'92s algorithm
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static int kadaneSum(int[] inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int maxSubArraySum = 0, currentSum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int num : inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 currentSum = Math.max(0, currentSum + num);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 maxSubArraySum = Math.max(maxSubArraySum, currentSum);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return maxSubArraySum;
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Slow prefix average
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static double[] slowPrefixAvg(int[] inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 double[] prefixAvg = new double[inputArray.length];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int i = 0; i < inputArray.length; i++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 int sum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int j = 0; j <= i; j++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 sum += inputArray[j];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 prefixAvg[i] = (double) sum / (i + 1);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return prefixAvg;
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Fast prefix average
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static double[] fastPrefixAvg(int[] inputArray) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 double[] prefixAvg = new double[inputArray.length];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int runningSum = 0;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int i = 0; i < inputArray.length; i++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 runningSum += inputArray[i];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 prefixAvg[i] = (double) runningSum / (i + 1);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return prefixAvg;
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0 // Main method to compare runtime in nanoseconds
+\f1 \
+
+\f0 \'a0\'a0\'a0 public static void main(String[] args) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 int[] sizes = \{8, 16, 32, 64, 128, 256, 512, 1024\};
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.printf("%-8s | %-12s | %-12s | %-12s | %-12s | %-12s | %-12s%n",
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 "Size", "M1", "M2", "M3", "M4", "Avg1", "Avg2");
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println("-------------------------------------------------------------");
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int size : sizes) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 int[] inputArray = new int[size];
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int i = 0; i < size; i++) \{
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 inputArray[i] = rand.nextInt(2 * size + 1) - size;
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long startTime, endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 startTime = System.nanoTime();
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 cubicSum(inputArray);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 endTime = System.nanoTime() - startTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long method1Time = endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 startTime = System.nanoTime();
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 quadraticSum(inputArray);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 endTime = System.nanoTime() - startTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long method2Time = endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 startTime = System.nanoTime();
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 divideConquerSum(inputArray);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 endTime = System.nanoTime() - startTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long method3Time = endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 startTime = System.nanoTime();
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 kadaneSum(inputArray);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 endTime = System.nanoTime() - startTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long method4Time = endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 startTime = System.nanoTime();
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 slowPrefixAvg(inputArray);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 endTime = System.nanoTime() - startTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long avg1Time = endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 startTime = System.nanoTime();
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 fastPrefixAvg(inputArray);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 endTime = System.nanoTime() - startTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 long avg2Time = endTime;
+\f1 \
+
+\f0 \'a0
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.printf("%-8d | %-12d ns | %-12d ns | %-12d ns | %-12d ns | %-12d ns | %-12d ns%n",
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 size, method1Time, method2Time, method3Time, method4Time, avg1Time, avg2Time);
+\f1 \
+
+\f0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \'a0\'a0\'a0 \}
+\f1 \
+
+\f0 \}
+\f1 \
+}
